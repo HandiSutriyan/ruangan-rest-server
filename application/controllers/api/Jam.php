@@ -36,7 +36,6 @@ class Jam extends REST_Controller{
 		$data = [
 			'paket' => $this->post('paket'),
 			'jam_mulai' => $this->post('jam_mulai'),
-			'jam_selesai' => $this->post('jam_selesai'),
 			'normal' => $this->post('normal'),
 		];
 
@@ -59,7 +58,6 @@ class Jam extends REST_Controller{
 		$data = [
 			'paket' => $this->put('paket'),
 			'jam_mulai' => $this->put('jam_mulai'),
-			'jam_selesai' => $this->put('jam_selesai'),
 			'normal' => $this->put('normal'),
 		];
 

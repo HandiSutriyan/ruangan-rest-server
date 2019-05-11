@@ -37,8 +37,8 @@ class Jadwal extends REST_Controller{
 			'hari' => $this->post('hari'),
 			'matkul' => $this->post('matkul'),
 			'dosen' => $this->post('dosen'),
-			'paket_jam_id_mulai' => $this->post('paket_jam_id_mulai'),
-			'paket_jam_id_selesai' => $this->post('paket_jam_id_selesai'),
+			'jam_mulai' => $this->post('jam_mulai'),
+			'jam_selesai' => $this->post('jam_selesai'),
 			'ruang_id' => $this->post('ruang_id'),
 			'kelas_id' => $this->post('kelas_id'),
 		];
@@ -63,8 +63,8 @@ class Jadwal extends REST_Controller{
 			'hari' => $this->put('hari'),
 			'matkul' => $this->put('matkul'),
 			'dosen' => $this->put('dosen'),
-			'paket_jam_id_mulai' => $this->put('paket_jam_id_mulai'),
-			'paket_jam_id_selesai' => $this->put('paket_jam_id_selesai'),
+			'jam_mulai' => $this->put('jam_mulai'),
+			'jam_selesai' => $this->put('jam_selesai'),
 			'ruang_id' => $this->put('ruang_id'),
 			'kelas_id' => $this->put('kelas_id'),
 		];
