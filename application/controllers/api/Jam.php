@@ -85,8 +85,7 @@ class Jam extends REST_Controller{
                     'message' => ' id required'
                 ], REST_Controller::HTTP_BAD_REQUEST);
 		}else{
-			if($this->jam->deleteJam($id) > 0){
-				$this->response([
+			$this->response([
                     'status' => TRUE,
                     'id' => $id,
                     'message' => 'data was deleted'

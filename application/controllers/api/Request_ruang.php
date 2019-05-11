@@ -38,6 +38,7 @@ class Request_ruang extends REST_Controller{
 			'kelas_id' => $this->put('kelas_id'),
 			'matkul' => $this->post('matkul'),
 			'dosen' => $this->post('dosen'),
+			'sks' => $this->put('sks'),
 			'hari' => $this->post('hari'),
 			'tanggal' => $this->post('tanggal'),
 			'ruang_id' => $this->post('ruang_id'),
@@ -66,6 +67,7 @@ class Request_ruang extends REST_Controller{
 			'kelas_id' => $this->put('kelas_id'),
 			'matkul' => $this->put('matkul'),
 			'dosen' => $this->put('dosen'),
+			'sks' => $this->put('sks'),
 			'hari' => $this->put('hari'),
 			'tanggal' => $this->put('tanggal'),
 			'ruang_id' => $this->put('ruang_id'),
@@ -103,7 +105,11 @@ class Request_ruang extends REST_Controller{
                     'message' => 'data was deleted'
                 ], REST_Controller::HTTP_OK);
 			}else{
-				$this->response([
+				$message = [
+		            'id' => $id,
+		            'message' => 'Deleted the resource'
+		        ];
+        		$this->response([
                     'status' => FALSE,
                     'message' => ' id was not found'
                 ], REST_Controller::HTTP_NOT_FOUND);
