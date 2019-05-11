@@ -5,55 +5,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 
-class Kelas extends REST_Controller{
-	//load model
+class Jam extends REST_Controller{
 	public function __construct(){
 		parent :: __construct();
-		$this->load->model('Kelas_model','kelas');
-
-		//$this->methods['index_get']['limit'] = 12;
+		$this->load->model('Jam_model', 'jam');
 	}
 
 	public function index_get(){
-		$id= $this->get('id');
+		$id = $this->post('id');
 
-		if($id == null){
-			$kelas = $this->kelas->getKelas();
+		if ($id === null){
+			$jam = $this->jam->getJam();
 		}else{
-			$kelas = $this->kelas->getKelas($id);
+			$jam = $this->jam->getJam($id);
 		}
 
-		// var_dump($kelas); respon bentuk array
-
-		if ($kelas){
+		if ($jam){
 			 $this->response([
                     'status' => TRUE,
-                    'data' => $kelas
+                    'data' => $jam
                 ], REST_Controller::HTTP_OK);
-		}else{
-			 $this->response([
+			}else{
+				$this->response([
                     'status' => FALSE,
-                    'message' => 'No id were found'
+                    'message' => 'No users id were found'
                 ], REST_Controller::HTTP_NOT_FOUND);
+			}
 		}
-	}
-
 	public function index_post(){
-		$data=[
-			'kelas' => $this->post('kelas'),
-			'angkatan' => $this->post('angkatan'),
-			'pj' => $this->post('pj'),
-			'no_hp' => $this->post('no_hp'),
+		$data = [
+			'paket' => $this->post('paket'),
+			'jam_mulai' => $this->post('jam_mulai'),
+			'jam_selesai' => $this->post('jam_selesai'),
+			'normal' => $this->post('normal'),
 		];
 
-		if ($this->kelas->createKelas($data) > 0){
+		if ($this->jam->createJam($data) > 0){
 			$this->response([
                     'status' => TRUE,
                     'data' => $data,
                     'message' => 'new data has been created'
                 ], REST_Controller::HTTP_CREATED);
 		}else{
-			 $this->response([
+			$this->response([
                     'status' => FALSE,
                     'message' => ' new data not created'
                 ], REST_Controller::HTTP_BAD_REQUEST);	
@@ -62,19 +56,18 @@ class Kelas extends REST_Controller{
 
 	public function index_put(){
 		$id = $this->put('id');
-
-		$data=[
-			'kelas' => $this->post('kelas'),
-			'angkatan' => $this->post('angkatan'),
-			'pj' => $this->post('pj'),
-			'no_hp' => $this->post('no_hp'),
+		$data = [
+			'paket' => $this->put('paket'),
+			'jam_mulai' => $this->put('jam_mulai'),
+			'jam_selesai' => $this->put('jam_selesai'),
+			'normal' => $this->put('normal'),
 		];
 
-		if ($this->kelas->updateKelas($data, $id) > 0){
+		if($this->jam->updateJam($data, $id) > 0){
 			$this->response([
                     'status' => TRUE,
                     'data' => $data,
-                    'message' => 'new data has been updated'
+                    'message' => 'data has been updated'
                 ], REST_Controller::HTTP_OK);
 		}else{
 			 $this->response([
@@ -88,24 +81,24 @@ class Kelas extends REST_Controller{
 	public function index_delete(){
 		$id = $this->delete('id');
 
-		if ($id === null){
-			 $this->response([
+		if($id === null){
+			$this->response([
                     'status' => FALSE,
                     'message' => ' id required'
                 ], REST_Controller::HTTP_BAD_REQUEST);
+		}else{
+			if($this->jam->deleteJam($id) > 0){
+				$this->response([
+                    'status' => TRUE,
+                    'id' => $id,
+                    'message' => 'data was deleted'
+                ], REST_Controller::HTTP_OK);
 			}else{
-				if ($this->kelas->deleteKelas($id) > 0){
-						$this->response([
-	                    'status' => TRUE,
-	                    'id' => $id,
-	                    'message' => 'data has been deleted'
-	                ], REST_Controller::HTTP_OK);
-				}else{
-						$this->response([
-	                    'status' => FALSE,
-	                    'message' => ' id was not found'
-	                ], REST_Controller::HTTP_NOT_FOUND);
-				}
+				$this->response([
+                    'status' => FALSE,
+                    'message' => ' id was not found'
+                ], REST_Controller::HTTP_NOT_FOUND);
 			}
+		}
 	}
 }

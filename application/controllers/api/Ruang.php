@@ -5,76 +5,69 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 
-class Kelas extends REST_Controller{
+class Ruang extends REST_Controller{
 	//load model
 	public function __construct(){
 		parent :: __construct();
-		$this->load->model('Kelas_model','kelas');
-
-		//$this->methods['index_get']['limit'] = 12;
+		$this->load->model('Ruang_model', 'ruang');
 	}
 
 	public function index_get(){
-		$id= $this->get('id');
+		$id = $this->get('id');
 
-		if($id == null){
-			$kelas = $this->kelas->getKelas();
+		if($id === null){
+			$ruang = $this->ruang->getRuang();
 		}else{
-			$kelas = $this->kelas->getKelas($id);
+			$ruang = $this->ruang->getRuang($id);
 		}
 
-		// var_dump($kelas); respon bentuk array
-
-		if ($kelas){
+		if ($ruang){
 			 $this->response([
                     'status' => TRUE,
-                    'data' => $kelas
+                    'data' => $ruang
                 ], REST_Controller::HTTP_OK);
 		}else{
-			 $this->response([
+			$this->response([
                     'status' => FALSE,
-                    'message' => 'No id were found'
+                    'message' => 'No users id were found'
                 ], REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 
 	public function index_post(){
-		$data=[
-			'kelas' => $this->post('kelas'),
-			'angkatan' => $this->post('angkatan'),
-			'pj' => $this->post('pj'),
-			'no_hp' => $this->post('no_hp'),
+		$data = [
+			'gedung' => $this->post('gedung'),
+			'ruang' => $this->post('ruang'),
 		];
 
-		if ($this->kelas->createKelas($data) > 0){
+		if ($this->ruang->createRuang($data) > 0){
 			$this->response([
                     'status' => TRUE,
                     'data' => $data,
                     'message' => 'new data has been created'
                 ], REST_Controller::HTTP_CREATED);
 		}else{
-			 $this->response([
+			$this->response([
                     'status' => FALSE,
                     'message' => ' new data not created'
                 ], REST_Controller::HTTP_BAD_REQUEST);	
 		}
+ 
 	}
 
 	public function index_put(){
 		$id = $this->put('id');
 
-		$data=[
-			'kelas' => $this->post('kelas'),
-			'angkatan' => $this->post('angkatan'),
-			'pj' => $this->post('pj'),
-			'no_hp' => $this->post('no_hp'),
+		$data = [
+			'gedung' => $this->put('gedung'),
+			'ruang' => $this->put('ruang'),
 		];
 
-		if ($this->kelas->updateKelas($data, $id) > 0){
+		if($this->ruang->updateRuang($data, $id) > 0){
 			$this->response([
                     'status' => TRUE,
                     'data' => $data,
-                    'message' => 'new data has been updated'
+                    'message' => 'data has been updated'
                 ], REST_Controller::HTTP_OK);
 		}else{
 			 $this->response([
@@ -82,30 +75,29 @@ class Kelas extends REST_Controller{
                     'message' => 'data not updated'
                 ], REST_Controller::HTTP_BAD_REQUEST);	
 		}
-
 	}
 
 	public function index_delete(){
 		$id = $this->delete('id');
 
-		if ($id === null){
-			 $this->response([
+		if($id === null){
+			$this->response([
                     'status' => FALSE,
                     'message' => ' id required'
                 ], REST_Controller::HTTP_BAD_REQUEST);
+		}else{
+			if($this->ruang->deleteRuang($id) > 0){
+				$this->response([
+                    'status' => TRUE,
+                    'id' => $id,
+                    'message' => 'data was deleted'
+                ], REST_Controller::HTTP_OK);
 			}else{
-				if ($this->kelas->deleteKelas($id) > 0){
-						$this->response([
-	                    'status' => TRUE,
-	                    'id' => $id,
-	                    'message' => 'data has been deleted'
-	                ], REST_Controller::HTTP_OK);
-				}else{
-						$this->response([
-	                    'status' => FALSE,
-	                    'message' => ' id was not found'
-	                ], REST_Controller::HTTP_NOT_FOUND);
-				}
+				$this->response([
+                    'status' => FALSE,
+                    'message' => ' id was not found'
+                ], REST_Controller::HTTP_NOT_FOUND);
 			}
+		}
 	}
 }

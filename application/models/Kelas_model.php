@@ -15,4 +15,14 @@ class Kelas_model extends CI_Model{
 		$this->db->insert('kelas', $data);
 		return $this->db->affected_rows();
 	}
+
+	public function updateKelas($data, $id){
+		$this->db->update('kelas', $data, ['id' => $id]);
+		return $this->db->affected_rows();
+	}
+
+	public function deleteKelas($id){
+		$this->db->delete('kelas', ['id' => $id]);
+		return $this->db->affected_rows();
+	}
 }
