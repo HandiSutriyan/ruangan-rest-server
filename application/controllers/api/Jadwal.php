@@ -9,6 +9,7 @@ class Jadwal extends REST_Controller{
 	public function __construct(){
 		parent :: __construct();
 		$this->load->model('Jadwal_model', 'jadwal');
+		$this->load->model('Status_model', 'status');
 	}
 
 	public function index_get(){
@@ -38,12 +39,22 @@ class Jadwal extends REST_Controller{
 			'matkul' => $this->post('matkul'),
 			'dosen' => $this->post('dosen'),
 			'jam_mulai' => $this->post('jam_mulai'),
-			'jam_selesai' => $this->post('jam_selesai'),
 			'ruang_id' => $this->post('ruang_id'),
 			'kelas_id' => $this->post('kelas_id'),
 		];
 
-		if ($this->jadwal->createJadwal($data) > 0){
+		$data_status = [
+			'ruang_id' => $this->post('ruang_id'),
+			'hari' => $this->post('hari'),
+			'jam' => $this->post('jam_mulai'),
+			'status' => 1,
+			'kelas_id' => $this->post('kelas_id'),
+
+		];
+		//insert data to jadwal table
+		$insert_jadwal = $this->jadwal->createJadwal($data);
+		$insert_status = $this->status->createStatus($data_status);
+		if ( $insert_jadwal > 0 && $insert_status  > 0){
 			$this->response([
                     'status' => TRUE,
                     'data' => $data,
@@ -55,6 +66,7 @@ class Jadwal extends REST_Controller{
                     'message' => ' new data not created'
                 ], REST_Controller::HTTP_BAD_REQUEST);	
 		}
+
 	}
 
 	public function index_put(){
@@ -69,7 +81,16 @@ class Jadwal extends REST_Controller{
 			'kelas_id' => $this->put('kelas_id'),
 		];
 
-		if($this->jadwal->updateJadwal($data, $id) > 0){
+		$data_status = [
+			'ruang_id' => $this->post('ruang_id'),
+			'hari' => $this->post('hari'),
+			'jam' => $this->post('jam_mulai'),
+			'status' => 1,
+			'kelas_id' => $this->post('kelas_id'),
+
+		];
+
+		if($this->jadwal->updateJadwal($data, $id) > 0 && $this->status->updateStatus($data_status, $id)){
 			$this->response([
                     'status' => TRUE,
                     'data' => $data,
@@ -91,7 +112,7 @@ class Jadwal extends REST_Controller{
                     'message' => ' id required'
                 ], REST_Controller::HTTP_BAD_REQUEST);
 		}else{
-			if($this->jadwal->deleteJadwal($id) > 0){
+			if($this->jadwal->deleteJadwal($id) > 0 && $this->status->deleteStatus($id)){
 				$this->response([
                     'status' => TRUE,
                     'id' => $id,

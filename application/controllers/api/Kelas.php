@@ -41,7 +41,7 @@ class Kelas extends REST_Controller{
 	public function index_post(){
 		$data=[
 			'kelas' => $this->post('kelas'),
-			'angkatan' => $this->post('angkatan'),
+			'semester' => $this->post('semester'),
 			'pj' => $this->post('pj'),
 			'no_hp' => $this->post('no_hp'),
 		];
@@ -64,10 +64,10 @@ class Kelas extends REST_Controller{
 		$id = $this->put('id');
 
 		$data=[
-			'kelas' => $this->post('kelas'),
-			'angkatan' => $this->post('angkatan'),
-			'pj' => $this->post('pj'),
-			'no_hp' => $this->post('no_hp'),
+			'kelas' => $this->put('kelas'),
+			'semester' => $this->put('semester'),
+			'pj' => $this->put('pj'),
+			'no_hp' => $this->put('no_hp'),
 		];
 
 		if ($this->kelas->updateKelas($data, $id) > 0){
